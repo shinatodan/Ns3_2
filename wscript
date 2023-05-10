@@ -821,6 +821,13 @@ def get_build_profile(env=None):
 def build(bld):
     env = bld.env
 
+    #shinato
+    # Crypto++のライブラリパスとインクルードパスを追加
+    env.append_value('LIB', ['cryptopp'])
+    env.append_value('LIBPATH', ['/usr/lib'])
+    env.append_value('CPPPATH', ['/usr/include/crypto++'])
+
+
     if Options.options.check_config:
         print_config(env, 'build')
     else:

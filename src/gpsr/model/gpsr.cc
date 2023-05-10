@@ -21,6 +21,10 @@
 #include "ns3/seq-ts-header.h"
 #include <string>
 
+//shinato
+#include <cryptopp/sha.h>
+#include <cryptopp/hex.h>
+
 #define GPSR_LS_GOD 0
 
 #define GPSR_LS_RLS 1
@@ -715,7 +719,25 @@ RoutingProtocol::RecvGPSR (Ptr<Socket> socket)
 void
 RoutingProtocol::UpdateRouteToNeighbor (Ipv4Address sender, Ipv4Address receiver, Vector Pos, uint64_t nodeid)
 {
-		m_neighbors.AddEntry (sender, Pos, nodeid);
+	m_neighbors.AddEntry (sender, Pos, nodeid);
+        
+
+        //GPSR内で使えているかの確認
+        CryptoPP::SHA256 hash;
+        std::string message = "Hello, Crypto++!";
+        std::string digest;
+
+        CryptoPP::StringSource(message, true,
+                new CryptoPP::HashFilter(hash,
+                new CryptoPP::HexEncoder(
+                        new CryptoPP::StringSink(digest),
+                        false
+                )
+                )
+        );
+        std::cout << "Message: " << message << std::endl;
+        std::cout << "SHA-256 Digest: " << digest << std::endl;
+
         
 }
 
